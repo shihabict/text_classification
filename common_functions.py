@@ -60,6 +60,6 @@ def plot_confusion_matrix(test_labels, predicted_labels, classes,architecture_na
     plt.close()
 
 def classification_report_with_accuracy_score(y_true, y_pred,classes,architecture):
-    cls_report = classification_report(y_true, y_pred, target_names=classes) # print classification report
+    cls_report = classification_report(y_true, y_pred) # print classification report
     with open(f'{architecture}_Classification_Report.txt', 'w') as f:
         print(cls_report, file=f)
