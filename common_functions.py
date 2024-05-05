@@ -3,8 +3,10 @@ import itertools
 import numpy as np
 from sklearn.metrics import confusion_matrix, classification_report
 
+from settings import DIR_REPORTS
 
-def plot_accuracy_and_loss(history,architecture_name):
+
+def plot_accuracy_and_loss(history, architecture_name):
     # Plot training & validation accuracy values
     plt.plot(history.history['accuracy'])
     # plt.plot(history.history['val_accuracy'])
@@ -13,8 +15,8 @@ def plot_accuracy_and_loss(history,architecture_name):
     plt.xlabel('Epoch')
     plt.legend(['Train', 'Test'], loc='upper left')
     # plt.savefig(f'{DIR_IMAGES_HISTORY}/{name}_accuracy.png')
-    plt.show()
-    plt.savefig(f'{architecture_name}_accuracy.png')
+    # plt.show()
+    plt.savefig(f'{DIR_REPORTS}/{architecture_name}_accuracy.png')
     plt.close()
     # Plot training & validation loss values
     if history.history['loss']:
@@ -25,14 +27,15 @@ def plot_accuracy_and_loss(history,architecture_name):
         plt.xlabel('Epoch')
         plt.legend(['Train', 'Test'], loc='upper left')
         # plt.savefig(f'{DIR_IMAGES_HISTORY}/{name}_loss.png')
-        plt.show()
-        plt.savefig(f'{architecture_name}_loss.png')
+        # plt.show()
+        plt.savefig(f'{DIR_REPORTS}/{architecture_name}_loss.png')
         plt.close()
     else:
         pass
 
 
-def plot_confusion_matrix(test_labels, predicted_labels, classes,architecture_name, normalize=False, title='Confusion Matrix', cmap=plt.cm.Blues,):
+def plot_confusion_matrix(test_labels, predicted_labels, classes, architecture_name, normalize=False,
+                          title='Confusion Matrix', cmap=plt.cm.Blues, ):
     cm = confusion_matrix(test_labels, predicted_labels)
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
@@ -55,11 +58,12 @@ def plot_confusion_matrix(test_labels, predicted_labels, classes,architecture_na
     plt.tight_layout()
     plt.ylabel('True Label')
     plt.xlabel('Predicted Label')
-    plt.show()
-    plt.savefig(f'{architecture_name}_confusion_matrix.png')
+    # plt.show()
+    plt.savefig(f'{DIR_REPORTS}/{architecture_name}_confusion_matrix.png')
     plt.close()
 
-def classification_report_with_accuracy_score(y_true, y_pred,classes,architecture):
-    cls_report = classification_report(y_true, y_pred) # print classification report
-    with open(f'{architecture}_Classification_Report.txt', 'w') as f:
+
+def classification_report_with_accuracy_score(y_true, y_pred, classes, architecture):
+    cls_report = classification_report(y_true, y_pred)  # print classification report
+    with open(f'{DIR_REPORTS}/{architecture}_Classification_Report.txt', 'w') as f:
         print(cls_report, file=f)

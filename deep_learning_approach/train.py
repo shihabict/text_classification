@@ -1,8 +1,6 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-
 import numpy as np
 import pandas as pd
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -11,11 +9,12 @@ from tensorflow.keras.layers import Embedding, SimpleRNN, LSTM, GRU, Dense, Drop
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.utils import to_categorical
 from fasttext import load_model
-
+import warnings
 from common_functions import plot_accuracy_and_loss, plot_confusion_matrix, classification_report_with_accuracy_score
 from preprocessing.preprocess import BanglaTextPreprocessor
 from settings import DIR_RESOURCES
 
+warnings.filterwarnings("ignore")
 
 class DLClassifier:
     def __init__(self, architecture):
@@ -23,8 +22,6 @@ class DLClassifier:
         self.epochs = 2
         self.architecture = architecture
         self.batch_size = 32
-        self.feature_col = 'text'
-        self.target_col = 'sentiment'
         self.tokenizer = Tokenizer()
         self.dropout_rate = 0.2
         self.embedding_units = 128
@@ -39,8 +36,8 @@ class DLClassifier:
             pass
         return data
 
-    def preprocess_data(self, data):
-        cleaned_data = self.preprocessor.preprocess(data,self.feature_col,self.target_col)
+    def preprocess_data(self, data,feature_col,target_col):
+        cleaned_data = self.preprocessor.preprocess(data,feature_col,target_col)
         return cleaned_data
 
     def calc_tfidf(self, data, col_name):
@@ -90,16 +87,16 @@ class DLClassifier:
             model.add(Dense(num_classes, activation='sigmoid'))
         return model
 
-    def train_model(self, data_path):
+    def train_model(self, data_path,feature_col,target_col):
 
         # load data
         data = self.load_data(data_path)
-        cleaned_data = self.preprocess_data(data)
+        cleaned_data = self.preprocess_data(data,feature_col,target_col)
         # preprocess data
         data = cleaned_data
 
-        texts = data[self.feature_col].tolist()
-        labels = data[self.target_col].tolist()
+        texts = data[feature_col].tolist()
+        labels = data[target_col].tolist()
 
         # Convert labels to numerical values
         label_set = sorted(set(labels))
