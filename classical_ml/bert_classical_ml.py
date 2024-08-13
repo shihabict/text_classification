@@ -12,7 +12,7 @@ from sklearn.svm import SVC
 
 # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 device = 'cpu'
-
+DIR_REPORTS = '../REPORT'
 
 class BERTClassicalMLClassifier:
     def __init__(self):
@@ -64,31 +64,54 @@ class BERTClassicalMLClassifier:
             rf = RandomForestClassifier(n_estimators=300, criterion='gini', random_state=0)
             rf.fit(x_train, y_train)
             print(f"Classification report: {rf.score(x_val, y_val)}")
+            with open(f'{DIR_REPORTS}/bert_ml_classification_report.txt', 'a') as f:
+                f.write(f"Training model: RandomForestClassifier\n")
+                f.write(f"Classification Accuracy: {rf.score(x_val, y_val)}\n")
         elif alogorithm == 'lr':
             print(f"Training model: LogisticRegression")
             lr = LogisticRegression(random_state=123, max_iter=300)
             lr.fit(x_train, y_train)
             print(f"Classification report: {lr.score(x_val, y_val)}")
+            with open(f'{DIR_REPORTS}/bert_ml_classification_report.txt', 'a') as f:
+                f.write(f"Training model: LogisticRegression\n")
+                f.write(f"Classification Accuracy: {lr.score(x_val, y_val)}\n")
+
         elif alogorithm == 'svm_linear':
             print(f"Training model: LinearSVC")
             svm = SVC(kernel='linear', C=0.2, probability=True, random_state=0)
             svm.fit(x_train, y_train)
             print(f"Classification report: {svm.score(x_val, y_val)}")
+            with open(f'{DIR_REPORTS}/bert_ml_classification_report.txt', 'a') as f:
+                f.write(f"Training model: LinearSVC\n")
+                f.write(f"Classification Accuracy: {svm.score(x_val, y_val)}\n")
+
         elif alogorithm == 'svm_rbf':
             print(f"Training model: SVC RBF")
             svm = SVC(kernel='rbf', C=0.2, probability=True, random_state=0)
             svm.fit(x_train, y_train)
             print(f"Classification report: {svm.score(x_val, y_val)}")
+            with open(f'{DIR_REPORTS}/bert_ml_classification_report.txt', 'a') as f:
+                f.write(f"Training model: SVC RBF\n")
+                f.write(f"Classification Accuracy: {svm.score(x_val, y_val)}\n")
+
         elif alogorithm == 'knn':
             print(f"Training model: KNeighborsClassifier")
             knn = KNeighborsClassifier(n_neighbors=5, metric='minkowski')
             knn.fit(x_train, y_train)
             print(f"Classification report: {knn.score(x_val, y_val)}")
+            with open(f'{DIR_REPORTS}/bert_ml_classification_report.txt', 'a') as f:
+                f.write(f"Training model: KNeighborsClassifier\n")
+                f.write(f"Classification Accuracy: {knn.score(x_val, y_val)}\n")
+
         elif alogorithm == 'dt':
             print(f"Training model: DecisionTreeClassifier")
             dt = DecisionTreeClassifier(criterion='entropy', random_state=0)
             dt.fit(x_train, y_train)
             print(f"Classification report: {dt.score(x_val, y_val)}")
+            with open(f'{DIR_REPORTS}/bert_ml_classification_report.txt', 'a') as f:
+                f.write(f"Training model: DecisionTreeClassifier\n")
+                f.write(f"Classification Accuracy: {dt.score(x_val, y_val)}\n")
+
         # elif alogorithm == 'nb':
         #     print(f"Training model: MultinomialNB")
         #     nb = MultinomialNB()
